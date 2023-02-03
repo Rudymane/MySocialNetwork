@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h1 id="profile-name">Following</h1>
+
+    <a id="parentid" hidden>0</a>
+    <div id="newpost-view" class="a">
+        
+        <form id="newpost-form">
+            
+            <h3>New Post</h3>
+            <textarea class="form-control" id="newpost-body" placeholder="Body"></textarea>
+            <input type="submit" class="btn btn-primary m-1"/>
+        </form>
+    </div>
+    <div id="newcomment-view" class="a" hidden>
+        
+        <form id="newcomment-form">
+            <h3>New Comment</h3>
+            <textarea class="form-control" id="newpost-body" placeholder="Body"></textarea>
+            <input type="submit" class="btn btn-primary m-1"/>
+        </form>
+    </div>
+    <div id="currentposts-view">
+    </div>
+    <div style="width: 100%;">
+        <div id="nextpage-view" class="center">
+            <button type="button" id = "nextpage" class="btn btn-primary m-1">Next</button>
+            
+        </div>
+        <div id="previouspage-view" class="center">
+            <button type="button" id = "previouspage" class="btn btn-primary m-1">Previous</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}

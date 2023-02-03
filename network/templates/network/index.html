@@ -1,0 +1,96 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div  class="row">
+        <div class="col-12 col-md-3 pr-4 dont-move" >
+            <div class="row">
+                <div class='col-12 col-md-3 ' >
+                    <img src="\network\files\userimages\logo.png" style="height :60px; width: auto;">
+                </div>
+                <div class='col-12 col-md-9'>
+                    <h3 class="white-important p-2 ">
+                        Twooder
+                    </h3>
+                </div>
+                <div class="content-section col-12 col-sm-12" style=" text-align: center">
+                    <div class="a" style="text-align: center;">
+                        <h2 class="my-4 "  style="text-align: center;">{{profile_name}}</h2>
+                        
+                        <img src="/{{images}}" style="height: 250px; text-align: center;" class="profileimage"/>
+                        <div class="center" id="follow-section">
+                            <br>
+                        </div>
+                        <div class="row" >
+                            <div class="col-6">
+                                <h3 style="text-align: center;">Followers</h3>
+                                <h2 style="text-align: center;">{{followers}}</h2>
+                                
+                            </div>
+                            <div class="col-6">
+                                <h3 style="text-align: center;">Following</h3>
+                                <h2 style="text-align: center;">{{following}}</h2>
+                            </div>
+                        </div>
+                    </div>             
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6  posts">
+            <h1 id="profile-name"></h1>
+            <h1>All Posts</h1>
+
+            <div id="newpost-view" class="a">
+                
+                <form id="newpost-form">
+                    <div id="parentid" hidden>0</div>
+                    <h3>New Post</h3>
+                    <textarea class="form-control" id="newpost-body" placeholder="Body"></textarea>
+                    <input type="submit" class="btn btn-primary m-1" value="Submit"/>
+                </form>
+            </div>
+            <div id="newcomment-view" class="a" hidden>
+                <a id="parentid" type="hidden">{{id}}</a>
+                <form id="newcomment-form">
+                    <h3>New Comment</h3>
+                    <textarea class="form-control" id="newpost-body" placeholder="Body"></textarea>
+                    <input type="submit" class="btn btn-primary m-1" />
+                </form>
+            </div>
+            <div id="currentposts-view">
+            </div>
+            <div style="width: 100%;">
+                <div id="nextpage-view" class="center">
+                    <button type="button" id = "nextpage" class="btn btn-primary m-1">Next</button>
+                    
+                </div>
+                <div id="previouspage-view" class="center">
+                    <button type="button" id = "previouspage" class="btn btn-primary m-1">Previous</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 ">
+            <h3 class="white-important p-2">
+                Search
+            </h3>
+             
+            <input type="text" list="datalist" onkeyup="ul(this.value)" id="lookup">
+            <span class="btn btn-primary m-1" onclick="lookup()">Go</span>
+
+
+            <!-- On keyup calls the function everytime a key is released -->
+            <datalist id="datalist">
+             
+            
+             
+            <!-- This data list will be edited through javascript     -->
+            </datalist>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}

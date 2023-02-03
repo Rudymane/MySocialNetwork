@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="row ">
+        <div class="col-3 settings-look" >   
+            <div> 
+                <h3>Settings</h3>
+            </div>
+            <a href="/settings/profile_picture">
+                <div class="settings2-look" > 
+                    <h3>Change Profile Picture</h3>
+                </div>
+                
+            </a>
+            <a href="/settings/banner_picture">
+                <div class="settings1-look" > 
+                    <h3>Change Banner Picture</h3>
+                </div>
+                
+            </a>
+        </div>  
+        <div id="settings1" class="col-9 settings-look" >
+            <div >
+                <h1>Profile</h1>
+                <h2>Add PNG/JPEG</h2>
+                <form method = "post" action="{% url 'upload' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input  id="user_profle" name="user_profile" value={{id}} hidden>
+                    <input type="file" id="image" name="image" accept="image/*">
+                    <br>
+                    <button type="submit">Upload</button>
+                </form>
+            </div>    
+        </div> 
+        <div id="settings2" class="col-9" >    
+        </div>        
+    <div>
+{% endblock %}
