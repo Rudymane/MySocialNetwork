@@ -156,7 +156,7 @@ function load_homepage(start=0, end=9) {
             editButton.addEventListener('click', function() {
         
                 document.getElementById("body"+post['id']).innerHTML = `
-                <textarea class="form-control" id="editpost-body" >${post['body']}</textarea>
+                <textarea class="form-control" id="editpost-body${post['id']}" >${post['body']}</textarea>
                 `
                 // Create finish button to submit edit
                 finishButton = document.createElement('button')
@@ -164,7 +164,7 @@ function load_homepage(start=0, end=9) {
                 finishButton.innerHTML = "Finish"
                 finishButton.addEventListener('click', function() {
                     edit_post(post['id']);
-                    document.getElementById("body"+post['id']).innerHTML = document.getElementById("editpost-body").value;
+                    document.getElementById("body"+post['id']).innerHTML = document.getElementById("editpost-body" + post['id']).value;
                     
                 })
                 document.getElementById("body"+post['id']).appendChild(finishButton)
@@ -265,7 +265,7 @@ function edit_post(post_id){
     fetch('/edit_post/' + post_id, {
         method: 'PUT',
         body: JSON.stringify({
-            body: document.querySelector('#editpost-body').value
+            body: document.querySelector('#editpost-body' +post_id).value
         })
     })
     
