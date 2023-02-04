@@ -129,6 +129,7 @@ def banner_upload(request):
 
 def settings(request):
     return render(request, "network/settings.html", {'id': request.user.id})
+
 def settings_banner(request):
     return render(request, "network/settings_banner.html", {'id': request.user.id})
 
@@ -187,7 +188,6 @@ def register(request):
 @login_required
 # loads info sent from javascript and saves the post in the Posts table
 def newpost(request):
-    parent_id = request.GET.get("parent")
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
     
@@ -199,8 +199,6 @@ def newpost(request):
         body=body
     )
     post.save()
-    
-
     return JsonResponse({"message": "Post Successful"}, status=201)
 
 @csrf_exempt
@@ -220,8 +218,6 @@ def newcomment(request):
         body=body
     )
     post.save()
-    
-
     return JsonResponse({"message": "Post Successful"}, status=201)
 
 @csrf_exempt
@@ -300,7 +296,6 @@ def followfeed(request):
 def feed(request):
     # parent_id is essential for determining if a post is a comment or an original post
     parent_id = str(request.GET.get("parent"))
-
     usersname = str(request.GET.get("username"))
     start = int(request.GET.get("start") or 0)
     end = int(request.GET.get("end") or (start + 9))
@@ -324,9 +319,6 @@ def feed(request):
 
     feed = posts.order_by('-timestamp').all()
     feed = feed[start:end +1]
-
-
-    
     return JsonResponse([post.serialize(int(request.user.id)) for post in feed], safe=False)
 
 # search() allows you search for a user using the search bar

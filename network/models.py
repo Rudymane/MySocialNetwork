@@ -16,7 +16,7 @@ class Posts(models.Model):
     likes = models.IntegerField(default=0)
     user_likes = models.ManyToManyField("Liked", related_name="user_liked")
 
-
+    # The user id gets passed into serialize when called upon
     def serialize(self, users_id):
         
         return{

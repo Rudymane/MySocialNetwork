@@ -44,7 +44,7 @@ function load_homepage(start=0, end=9) {
         .then(response => response.json())
         .then(follows => {
             
-            
+            // Create follow button
             followButton = document.createElement('button')
             followButton.className = "btn btn-primary center"
             followButton.setAttribute("id", "followbutton")
@@ -52,6 +52,7 @@ function load_homepage(start=0, end=9) {
 
 
             console.log(follows)
+            // Change follow button's html depending on if the user follows the person or not
             follows.forEach(follow => {
                 console.log(follow['name'])
                 
@@ -61,6 +62,7 @@ function load_homepage(start=0, end=9) {
                 }
 
             })
+            // Update followers and following count 
             document.querySelector('#follow-section').appendChild(followButton)
             followButton.addEventListener('click', function() {
                 
@@ -73,6 +75,7 @@ function load_homepage(start=0, end=9) {
                     document.getElementById("the_followers").innerHTML -= -1
                 }
                 
+                // Send updated folling amount using PUT request
                 fetch('/following/' + username, {
                     method: 'PUT',
                     body: JSON.stringify({follow : document.getElementById("followbutton").innerHTML})
@@ -85,19 +88,17 @@ function load_homepage(start=0, end=9) {
         
     }
     
-    // retrieves 10 or less posts per page      
+    // retrieves 10 or less posts per page based on the "start","end","username", "parent" variables     
     fetch(`/feed?start=${beginning}&end=${ending}&username=${username}&parent=${parent}`)
     .then(response => response.json())
     .then(posts => {
         
-    
-
         posts.forEach(post =>{
             console.log("this is each post",post)
             
+            // display user posts
             let div = document.createElement('div')
             div.className = "a"
-            
             div.innerHTML = `
                 <div id="post-info${post['id']}">
                     <img src="/${post['profile']}" style="width:auto;height:30px; clip-path: circle();" />
@@ -113,6 +114,7 @@ function load_homepage(start=0, end=9) {
                 </span>
                 <br>
             `;
+
             // create like button
             likeButton = document.createElement('button')
             likeButton.className = "fa-solid fa-thumbs-up like"
@@ -149,34 +151,32 @@ function load_homepage(start=0, end=9) {
                     })
                 })
             })
+
+            // Create comment button
             commentButton = document.createElement('button')
             commentButton.className = "fa-sharp fa-solid fa-comments like"
             commentButton.setAttribute("id", "comment"+post['id'])
             commentButton.onclick = () => window.location = '/'+'comments/' +post['id'];
 
+            // Create edit button
             editButton = document.createElement('button')
             editButton.className = "fa fa-pencil edit"
             editButton.addEventListener('click', function() {
-                
-                
+        
                 document.getElementById("body"+post['id']).innerHTML = `
                 <textarea class="form-control" id="editpost-body" >${post['body']}</textarea>
                 `
+                // Create finish button to submit edit
                 finishButton = document.createElement('button')
                 finishButton.className = "btn btn-primary"
                 finishButton.innerHTML = "Finish"
                 finishButton.addEventListener('click', function() {
                     edit_post(post['id']);
-                    
-                    
                     document.getElementById("body"+post['id']).innerHTML = document.getElementById("editpost-body").value;
                     
                 })
                 document.getElementById("body"+post['id']).appendChild(finishButton)
-
             })
-            
-            
             
             view.append(div)
             document.getElementById("thumbs-up" +post['id']).appendChild(likeButton)
@@ -185,8 +185,6 @@ function load_homepage(start=0, end=9) {
                 document.getElementById("post-info" +post['id']).appendChild(editButton)
             }
         });
-        
-        
     })
 
     // Check if there are more posts on the next page
@@ -254,7 +252,8 @@ function submit_comment() {
     const posted_comment = document.querySelector('#newcomment-body').value
     document.getElementById('currentposts-view').innerHTML = '';
     document.querySelector('#newcomment-body').value ="";
-    
+
+    // Use POST request to make new comment
     fetch('/newcomment', {
         method: 'POST',
         body: JSON.stringify({
@@ -266,6 +265,7 @@ function submit_comment() {
 
 }
 
+// Use PUT request to edit post
 function edit_post(post_id){
     fetch('/edit_post/' + post_id, {
         method: 'PUT',
@@ -286,9 +286,9 @@ function next_page() {
     document.getElementById('currentposts-view').innerHTML = '';
     load_homepage(start, end);
 }
+
 // Update start and end to show content on previous page
 function previous_page() {
-
     const start = counter - quantity -10 ;
     const end = counter -1 -10;
     if (end < 9){
@@ -311,16 +311,11 @@ function ul(value){
         names = people
 
     })
-        
-        
     
-    var n= names.length; //length of datalist names   
-
-
+    var n= names.length; // Length of datalist names  
     console.log("this is names", names)
-
     document.getElementById('datalist').innerHTML = '';
-        //datalist needs to be empty at start or else the same name will be repeated
+        // Datalist needs to be empty at start or else the same name will be repeated
         
         l=value.length;
         
@@ -328,19 +323,18 @@ function ul(value){
     
         if(((names[i].toLowerCase()).indexOf(value.toLowerCase()))>-1)
         {
-            //seeing if user input string is in names[i]
-            
+            // Seeing if user input string is in names[i]
             var node = document.createElement("option");
             var val = document.createTextNode(names[i]);
             node.appendChild(val);
 
             document.getElementById("datalist").appendChild(node);
-                //updates datalist with the names available with current search
+                // Updates datalist with the names available with current search
             }
         }
-
 }
 
+// Search the name of the person searched for
 function lookup() {
     window.location = '/'+'profile/' +document.getElementById("lookup").value;
 }
