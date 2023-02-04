@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-
     // Use buttons to toggle between views
     document.querySelector('#newpost-form').addEventListener('submit', submit_post);
     document.querySelector('#newcomment-form').addEventListener('submit', submit_comment);    
     document.querySelector('#nextpage').addEventListener('click', next_page); 
     document.querySelector('#previouspage').addEventListener('click', previous_page); 
-    // document.querySelector('#currentposts-view').addEventListener('submit', edit_post(post['id']))
     // By default, load the inbox
     load_homepage();
 });
@@ -19,8 +17,6 @@ const quantity = 10;
 console.log("hello")
 
 function load_homepage(start=0, end=9) {
-    
-    
     
     document.querySelector('#newpost-view').style.display = 'block';
     document.querySelector('#newcomment-view').style.display = 'block';
@@ -35,10 +31,9 @@ function load_homepage(start=0, end=9) {
     const parent= document.querySelector('#parentid').innerHTML
     console.log(parent)
     document.querySelector('#newpost-body').value = ''
-    // retrieve the feed for those who the user is following
+    // Retrieve the feed for those who the user is following
     if (username != "" && username != document.getElementById("user-name").value && username != "Following"){
 
-        
         document.querySelector('#newpost-view').style.display = 'none';
         fetch(`/followfeed/?name=${username}`)
         .then(response => response.json())
@@ -83,9 +78,6 @@ function load_homepage(start=0, end=9) {
             })
             
         }) 
-        
-
-        
     }
     
     // retrieves 10 or less posts per page based on the "start","end","username", "parent" variables     
@@ -191,6 +183,7 @@ function load_homepage(start=0, end=9) {
     fetch(`/feed?start=${beginning}&end=${ending + 1}&username=${username}&parent=${parent}`)
     .then(response => response.json())
     .then(posts =>{
+
         // display next button if there are more posts on the next page
         if(posts.length >10){
             document.querySelector('#nextpage-view').style.display = 'block';
@@ -200,6 +193,7 @@ function load_homepage(start=0, end=9) {
         }
     })
     
+    // Do not display previous page if there are no previous posts
     if(beginning == 0){
         document.querySelector('#previouspage-view').style.display = 'none'; 
     }
@@ -209,7 +203,7 @@ function load_homepage(start=0, end=9) {
     
 }
 
-// like or dislike post when clicked on
+// Like or dislike post when clicked on
 function like_post(){
     if(document.getElementById("c-like").style.color == "black"){
         console.log(document.getElementById("c-likescount").innerHTML)
@@ -223,6 +217,7 @@ function like_post(){
         document.getElementById("c-likescount").innerHTML -= 1
     }
 
+    // In this case, "parentid" is just the normal post id
     fetch('/posts/' + document.getElementById("parentid").innerHTML, {
         method: 'PUT',
         body: JSON.stringify({like : document.getElementById("c-like").style.color
@@ -230,7 +225,7 @@ function like_post(){
     })
 }  
 
-// submits post from the values entered in '#newpost-body'
+// Submits post from the values entered in '#newpost-body'
 function submit_post() {
     event.preventDefault();
     document.getElementById('currentposts-view').innerHTML = '';
@@ -304,7 +299,7 @@ function previous_page() {
 
 var names = [];
 function ul(value){
-    
+    // Use fetch request to get list of names
     fetch('/search/')
     .then(response => response.json())
     .then(people=>{

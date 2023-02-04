@@ -291,7 +291,7 @@ def followfeed(request):
     return JsonResponse([follow.serialize() for follow in follow], safe=False)
 
 
-# that passes a list of followed people so that feed can sort by the list of people.
+# Feed sorts the list of people/posts
 @login_required
 def feed(request):
     # parent_id is essential for determining if a post is a comment or an original post
